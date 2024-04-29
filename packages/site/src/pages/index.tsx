@@ -4,14 +4,14 @@ import { MetamaskActions, MetaMaskContext } from '../hooks';
 import {
   connectSnap,
   getSnap,
-  sendHello,
+  startCron,
   shouldDisplayReconnectButton,
 } from '../utils';
 import {
   ConnectButton,
   InstallFlaskButton,
   ReconnectButton,
-  SendHelloButton,
+  StartCronButton,
   Card,
 } from '../components';
 import { ethers } from 'ethers';
@@ -142,9 +142,9 @@ const Index = () => {
     }
   };
 
-  const handleSendHelloClick = async () => {
+  const handleStartCronClick = async () => {
     try {
-      await sendHello();
+      await startCron(LendingContractAddress);
     } catch (e) {
       console.error(e);
       dispatch({ type: MetamaskActions.SetError, payload: e });
@@ -357,7 +357,6 @@ const Index = () => {
               title: 'Buy an NFT',
               description: (
                 <form id="buyNFT" onSubmit={buyNFTHandler}>
-                  <p><label>TokenID:</label></p>
                   <p><input type="text" placeholder="Token ID" name="BuyNFTtokenID" id="BuyNFTtokenID" /></p>
                   <button type="submit">Buy NFT</button>
                 </form>
@@ -389,7 +388,6 @@ const Index = () => {
               title: 'Request Loan By NFT as Collateral',
               description: (
                 <form id="requestLoan" onSubmit={requestLoanHandler}>
-                  <p><label>TokenID:</label></p>
                   <p><input type="text" placeholder="Token ID" name="RequestLoanTokenID" id="RequestLoanTokenID" /></p>
                   <button type="submit">Request Loan</button>
                 </form>
@@ -405,7 +403,6 @@ const Index = () => {
               title: 'Propose Loan Contract',
               description: (
                 <form id="proposeLoanContract" onSubmit={proposeLoanHandler}>
-                  <p><label>TokenID:</label></p>
                   <p><input type="text" placeholder="Proposal ID" name="ProposeLoanContractProposalID" id="ProposeLoanContractProposalID" /></p>
                   <p><input type="text" placeholder="Loan Amount" name="ProposeLoanContractLoanAmount" id="ProposeLoanContractLoanAmount" /></p>
                   <p><input type="text" placeholder="Interest Rate" name="ProposeLoanContractInterestRate" id="ProposeLoanContractInterestRate" /></p>
@@ -424,7 +421,6 @@ const Index = () => {
               title: 'Approve Loan Contract',
               description: (
                 <form id="approveLoanContract" onSubmit={approveLoanProposalHandler}>
-                  <p><label>TokenID:</label></p>
                   <p><input type="text" placeholder="Proposal ID" name="ApproveLoanContractProposalID" id="ApproveLoanContractProposalID" /></p>
                   <button type="submit">Approve Loan Contract</button>
                 </form>
@@ -436,12 +432,12 @@ const Index = () => {
         )}
         <Card
           content={{
-            title: 'Send Hello message',
+            title: 'Start Event CronJob',
             description:
-              'Display a custom message within a confirmation screen in MetaMask.',
+              'Fetch required events from LendFi and Display a custom message confirmation screen in MetaMask.',
             button: (
-              <SendHelloButton
-                onClick={handleSendHelloClick}
+              <StartCronButton
+                onClick={handleStartCronClick}
                 disabled={!state.installedSnap}
               />
             ),
