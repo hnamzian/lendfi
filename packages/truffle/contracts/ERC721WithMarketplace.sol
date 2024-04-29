@@ -26,7 +26,7 @@ contract NFTWithMarketplace is ERC721URIStorage, Ownable {
     }
 
     function mintNFT(address to, uint256 tokenId, string memory tokenURI) public onlyOwner {
-        _safeMint(to, tokenId);
+        _mint(to, tokenId);
         _setTokenURI(tokenId, tokenURI);
 
         emit NFTMinted(to, tokenId, tokenURI);
