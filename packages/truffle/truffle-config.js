@@ -21,6 +21,8 @@
 require('dotenv').config();
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const mnemonic = process.env.MNEMONIC_PHRASE;
+const privateKey = process.env.PRIVATE_KEY
+const apiKey = process.env.INFURA_API_KEY
 
 module.exports = {
   /**
@@ -33,7 +35,7 @@ module.exports = {
    * $ truffle test --network <network-name>
    */
 
-  contracts_build_directory: './build',
+  contracts_build_directory: '../snap/src/contracts',
   networks: {
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
@@ -46,6 +48,14 @@ module.exports = {
       port: 8545, // Standard Ethereum port (default: none)
       network_id: '*', // Any network (default: none)
     },
+
+    sepolia: {
+      provider: () => new HDWalletProvider(privateKey, "https://sepolia.infura.io/v3/" + apiKey),
+      network_id: "11155111",
+      gas: 4000000,
+      networkCheckTimeout: 10000,
+      timeoutBlocks: 200
+    }
     //
     // An additional network, but with some advanced options…
     // advanced: {
